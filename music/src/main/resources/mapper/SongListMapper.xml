@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.music.mapper.SongListMapper">
+    <resultMap id="songListDetail" type="com.example.music.dto.SongListDTO">
+        <id property="songListID" column="songListID"></id>
+        <result property="songListName" column="songListName" javaType="java.lang.String"></result>
+        <result property="createUserID" column="createUserID" javaType="java.lang.Integer"></result>
+        <result property="createDate" column="createDate" javaType="java.util.Date"></result>
+        <result property="introduction" column="introduction" javaType="java.lang.String"></result>
+        <result property="imageUrl" column="imageUrl" javaType="java.lang.String"></result>
+        <collection property="songs" ofType="com.example.music.bean.Song">
+            <id property="songID" column="songID"></id>
+            <result property="songName" column="songName"></result>
+            <result property="singer" column="singer"></result>
+            <result property="fileUrl" column="fileUrl"></result>
+            <result property="hits" column="hits"></result>
+            <result property="download" column="download"></result>
+            <result property="songType" column="songType"></result>
+            <result property="imageUrl" column="imageUrl"></result>
+        </collection>
+    </resultMap>
+    <select id="getSongListDetail" resultMap="songListDetail">
+       SELECT *
+       FROM songlist AS l,songlistdetailed AS d,song s
+       WHERE l.songListID=d.songListID AND d.songID=s.songID
+    </select>
+
+    <select id="getSongList" resultType="com.example.music.bean.SongList">
+        SELECT * FROM songlist
+    </select>
+    <select id="getSongListByName" resultType="com.example.music.bean.SongList">
+        SELECT * FROM songlist AS s
+        WHERE s.songListName LIKE '%${songListName}%'
+    </select>
+</mapper>
